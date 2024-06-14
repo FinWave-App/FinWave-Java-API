@@ -93,7 +93,9 @@ class TransactionApiTest {
                 .orElse(null);
 
         assertNotNull(editedTransaction);
-        assertEquals(createdAt.truncatedTo(ChronoUnit.SECONDS), editedTransaction.createdAt().truncatedTo(ChronoUnit.SECONDS));
+        assertTrue(createdAt.truncatedTo(ChronoUnit.SECONDS).isEqual(
+                editedTransaction.createdAt().truncatedTo(ChronoUnit.SECONDS)
+        ));
         assertEquals(BigDecimal.valueOf(20), editedTransaction.delta());
         assertEquals("Edited Transaction", editedTransaction.description());
     }

@@ -70,7 +70,9 @@ class RecurringTransactionApiTest {
                 .orElse(null);
 
         assertNotNull(editedTransaction);
-        assertEquals(newNextRepeat.truncatedTo(ChronoUnit.SECONDS), editedTransaction.nextRepeat().truncatedTo(ChronoUnit.SECONDS));
+        assertTrue(newNextRepeat.truncatedTo(ChronoUnit.SECONDS).isEqual(
+                editedTransaction.nextRepeat().truncatedTo(ChronoUnit.SECONDS)
+        ));
         assertEquals(BigDecimal.valueOf(20), editedTransaction.delta());
         assertEquals("Edited Recurring Transaction", editedTransaction.description());
     }

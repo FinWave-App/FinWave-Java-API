@@ -62,7 +62,9 @@ class NoteApiTest {
 
         var editedNote = client.runRequest(new NoteApi.GetNoteRequest(noteId)).get();
         assertNotNull(editedNote);
-        assertEquals(newNotificationTime.truncatedTo(ChronoUnit.SECONDS), editedNote.notificationTime().truncatedTo(ChronoUnit.SECONDS));
+        assertTrue(newNotificationTime.truncatedTo(ChronoUnit.SECONDS).isEqual(
+                editedNote.notificationTime().truncatedTo(ChronoUnit.SECONDS)
+        ));
     }
 
     @Test
