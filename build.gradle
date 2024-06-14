@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "su.knst.finwave.api"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -26,12 +26,15 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
         }
     }
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/FinWave-App/FinWave-Java-API"
+            url = "https://maven.pkg.github.com/finwave-app/finwave-java-api"
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("GITHUB_TOKEN")
