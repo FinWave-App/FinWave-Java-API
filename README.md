@@ -66,4 +66,4 @@ void getAccounts(AccountApi.GetAccountsListResponse response, Throwable e) {
 }
 ```
 
-This project also has tests where you can see more usage examples.
+This project also has [tests](https://github.com/FinWave-App/FinWave-Java-API/tree/main/src/test/java/su/knst/finwave/api) where you can see more usage examples.
