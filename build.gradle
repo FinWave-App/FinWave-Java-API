@@ -36,7 +36,7 @@ publishing {
             name = "GitHubPackages"
             url = "https://maven.pkg.github.com/finwave-app/finwave-java-api"
             credentials {
-                username = System.getenv("USERNAME")
+                username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
