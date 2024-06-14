@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "app.finwave.api"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ publishing {
             from components.java
             groupId = 'app.finwave.api'
             artifactId = 'finwave-java-api'
-            version = '1.0.2'
+            version = '1.0.3'
 
             pom {
                 name = 'FinWaveJavaAPI'
