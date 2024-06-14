@@ -20,6 +20,24 @@ Java wrapper for the convenient interaction with the FinWave REST API. It provid
 - **TransactionTagApi**
 - **UserApi**
 
+## Install
+### Gradle
+
+```gradle
+repositories {
+    mavenCentral()
+    ...
+    maven {
+        url "https://maven.pkg.github.com/finwave-app/finwave-java-api"
+    }
+}
+
+dependencies {
+    ...
+    implementation 'app.finwave.api:finwave-java-api:1.0.1'
+}
+```
+
 ## Usage Example
 
 ```java

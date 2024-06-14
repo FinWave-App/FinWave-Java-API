@@ -3,8 +3,8 @@ plugins {
     id("maven-publish")
 }
 
-group = "su.knst.finwave.api"
-version = "1.0.1"
+group = "app.finwave.api"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -26,12 +26,47 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'su.knst.finwave.api'
+            groupId = 'app.finwave.api'
             artifactId = 'finwave-java-api'
-            version = '1.0.1'
+            version = '1.0.2'
+
+            pom {
+                name = 'FinWaveJavaAPI'
+                description = 'Java wrapper for the convenient interaction with the FinWave REST API'
+                url = 'https://github.com/FinWave-App/FinWave-Java-API'
+
+                licenses {
+                    license {
+                        name = 'MIT license'
+                        url = 'https://raw.githubusercontent.com/FinWave-App/FinWave-Java-API/main/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'knst'
+                        name = 'isKONSTANTIN'
+                        email = 'me@knst.su'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/FinWave-App/FinWave-Java-API.git'
+                    developerConnection = 'scm:git:ssh://github.com:FinWave-App/FinWave-Java-API.git'
+                    url = 'https://github.com/FinWave-App/FinWave-Java-API'
+                }
+            }
         }
     }
     repositories {
+        maven {
+            name = "MavenCentral"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            credentials {
+                username = System.getenv("OSSRH_DEPLOY_USERNAME")
+                password = System.getenv("OSSRH_DEPLOY_PASSWORD")
+            }
+        }
         maven {
             name = "GitHubPackages"
             url = "https://maven.pkg.github.com/finwave-app/finwave-java-api"
