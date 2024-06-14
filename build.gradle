@@ -27,7 +27,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             groupId = 'su.knst.finwave.api'
-            artifactId = 'FinWaveJavaAPI'
+            artifactId = 'finwave-java-api'
             version = '1.0.1'
         }
     }
