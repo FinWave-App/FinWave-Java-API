@@ -26,9 +26,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'app.finwave.api'
+            groupId = project.group
             artifactId = 'finwave-java-api'
-            version = '1.0.3'
+            version = project.version
 
             pom {
                 name = 'FinWaveJavaAPI'
@@ -61,7 +61,7 @@ publishing {
     repositories {
         maven {
             name = "MavenCentral"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
             credentials {
                 username = System.getenv("OSSRH_DEPLOY_USERNAME")
                 password = System.getenv("OSSRH_DEPLOY_PASSWORD")
