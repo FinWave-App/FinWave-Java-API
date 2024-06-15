@@ -1,10 +1,11 @@
 plugins {
     id("java")
     id("maven-publish")
+    id("signing")
 }
 
 group = "app.finwave.api"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -20,7 +21,6 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
 
 publishing {
     publications {
@@ -76,4 +76,9 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSPHRASE"))
+    sign publishing.publications.mavenJava
 }

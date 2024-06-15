@@ -24,10 +24,18 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - name: Publish to GitHub Packages
+    - name: Import GPG key
+      run: |
+        echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+    - name: Publish to GitHub Packages and Maven Central
       run: ./gradlew publish
       env:
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OSSRH_DEPLOY_USERNAME: ${{ secrets.OSSRH_DEPLOY_USERNAME }}
         OSSRH_DEPLOY_PASSWORD: ${{ secrets.OSSRH_DEPLOY_PASSWORD }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
