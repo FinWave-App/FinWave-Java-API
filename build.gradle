@@ -1,7 +1,6 @@
 plugins {
     id("java")
     id("maven-publish")
-    id("signing")
 }
 
 group = "app.finwave.api"
@@ -60,11 +59,11 @@ publishing {
     }
     repositories {
         maven {
-            name = "MavenCentral"
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2"
+            name = "FinWaveNexus"
+            url = "https://nexus.finwave.app/repository/maven-public"
             credentials {
-                username = System.getenv("OSSRH_DEPLOY_USERNAME")
-                password = System.getenv("OSSRH_DEPLOY_PASSWORD")
+                username = System.getenv("NEXUS_DEPLOY_USERNAME")
+                password = System.getenv("NEXUS_DEPLOY_PASSWORD")
             }
         }
         maven {
@@ -76,9 +75,4 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    useInMemoryPgpKeys(System.getenv("GPG_PRIVATE_KEY"), System.getenv("GPG_PASSPHRASE"))
-    sign publishing.publications.mavenJava
 }

@@ -27,12 +27,12 @@ Java wrapper for the convenient interaction with the FinWave REST API. It provid
 repositories {
     mavenCentral()
     maven {
-        url "https://maven.pkg.github.com/finwave-app/finwave-java-api"
+        url "https://nexus.finwave.app/repository/maven-public"
     }
 }
 
 dependencies {
-    implementation 'app.finwave.api:finwave-java-api:1.0.2'
+    implementation 'app.finwave.api:finwave-java-api:1.0.4'
 }
 ```
 
