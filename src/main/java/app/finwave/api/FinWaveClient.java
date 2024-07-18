@@ -1,12 +1,17 @@
 package app.finwave.api;
 
 import app.finwave.api.tools.*;
+import app.finwave.api.websocket.FinWaveWebSocketClient;
+import app.finwave.api.websocket.messages.handler.AbstractWebSocketHandler;
+import app.finwave.api.websocket.messages.requests.AuthMessageRequest;
 import com.google.gson.JsonElement;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
@@ -14,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FinWaveClient {
-    protected static ExecutorService threadPool = Executors.newFixedThreadPool(4,
+    protected static ExecutorService threadPool = Executors.newCachedThreadPool(
             r -> {
                 Thread thread = new Thread(r);
                 thread.setDaemon(true);
@@ -49,6 +54,31 @@ public class FinWaveClient {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public FinWaveWebSocketClient connectToWebsocket(String url, String path, AbstractWebSocketHandler handler) throws URISyntaxException, InterruptedException {
+        FinWaveWebSocketClient client = new FinWaveWebSocketClient(new URI(url + path));
+        client.setHandler(handler);
+
+        if (!client.connectBlocking())
+            return null;
+
+        if (token != null && !token.isBlank())
+            client.send(new AuthMessageRequest(token));
+
+        return client;
+    }
+
+    public FinWaveWebSocketClient connectToWebsocket(String path, AbstractWebSocketHandler handler) throws URISyntaxException, InterruptedException {
+        return connectToWebsocket(
+                baseURL.replaceFirst("http://", "ws://")
+                        .replaceFirst("https://", "wss://"),
+                path, handler
+        );
+    }
+
+    public FinWaveWebSocketClient connectToWebsocket(AbstractWebSocketHandler handler) throws URISyntaxException, InterruptedException {
+        return connectToWebsocket("websockets/events", handler);
     }
 
     public  <R extends IResponse, T extends IRequest<R>> CompletableFuture<R> runRequest(T request) {
