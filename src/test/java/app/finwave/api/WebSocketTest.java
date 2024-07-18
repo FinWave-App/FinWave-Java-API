@@ -143,4 +143,12 @@ public class WebSocketTest {
         assertEquals("Test notification", notification.text());
         assertFalse(notification.options().silent());
     }
+
+    @Test
+    @Order(6)
+    void close() throws InterruptedException {
+        webSocketClient.closeBlocking();
+
+        assertFalse(webSocketClient.isOpen());
+    }
 }

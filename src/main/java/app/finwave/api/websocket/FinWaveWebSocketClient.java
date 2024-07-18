@@ -8,6 +8,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static app.finwave.api.tools.Misc.GSON;
@@ -25,10 +26,12 @@ public class FinWaveWebSocketClient extends WebSocketClient {
                 return thread;
             });
 
+    protected ScheduledFuture<?> future;
+
     public FinWaveWebSocketClient(URI uri) {
         super(uri);
 
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
+        future = scheduledExecutorService.scheduleAtFixedRate(() -> {
            if (isOpen() && System.currentTimeMillis() - lastPing > 15000) {
                send("ping");
            }
@@ -75,5 +78,12 @@ public class FinWaveWebSocketClient extends WebSocketClient {
         lastPing = System.currentTimeMillis();
 
         send(GSON.toJson(message));
+    }
+
+    @Override
+    public void close() {
+        future.cancel(true);
+
+        super.close();
     }
 }
