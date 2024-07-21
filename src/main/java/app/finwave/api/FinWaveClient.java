@@ -60,10 +60,9 @@ public class FinWaveClient {
         FinWaveWebSocketClient client = new FinWaveWebSocketClient(new URI(url + path));
         client.setHandler(handler);
 
-        if (!client.connectBlocking())
-            return null;
+        boolean connected = client.connectBlocking();
 
-        if (token != null && !token.isBlank())
+        if (connected && token != null && !token.isBlank())
             client.send(new AuthMessageRequest(token));
 
         return client;
