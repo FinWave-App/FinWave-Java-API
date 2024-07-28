@@ -81,5 +81,5 @@ public class SessionsApi {
 
     public record GetListResponse(List<Session> sessions) implements IResponse {}
 
-    public record Session(long sessionId, String token, LocalDateTime createdAt, LocalDateTime expiresAt, String description) {}
+    public record Session(long sessionId, boolean limited, LocalDateTime createdAt, LocalDateTime expiresAt, String description) {}
 }
