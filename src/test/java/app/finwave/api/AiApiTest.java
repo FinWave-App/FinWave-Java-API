@@ -16,6 +16,9 @@ class AiApiTest {
     @BeforeAll
     void setUp() throws ExecutionException, InterruptedException {
         client = DemoLogin.createDemoAndLogin();
+        boolean enabled = client.runRequest(new ConfigApi.GetConfigsRequest()).get().ai().enabled();
+
+        Assumptions.assumeTrue(enabled);
     }
 
     @Test

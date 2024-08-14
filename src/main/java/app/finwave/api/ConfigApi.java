@@ -53,13 +53,16 @@ public class ConfigApi {
 //        }
 
     public record PublicConfigs(UserConfig users,
-                                AccountsConfig accounts,
-                                CurrencyConfig currencies,
-                                NotesConfig notes,
-                                TransactionConfig transactions,
-                                AnalyticsConfig analytics,
-                                NotificationsConfig notifications,
-                                AccumulationConfig accumulation,
-                                RecurringTransactionConfig recurring,
-                                ReportConfig reports) implements IResponse { }
+                         AccountsConfig accounts,
+                         CurrencyConfig currencies,
+                         NotesConfig notes,
+                         TransactionConfig transactions,
+                         AnalyticsConfig analytics,
+                         NotificationsConfig notifications,
+                         AccumulationConfig accumulation,
+                         RecurringTransactionConfig recurring,
+                         ReportConfig reports,
+                         AiPublic ai) implements IResponse { }
+
+    record AiPublic(boolean enabled) {}
 }
