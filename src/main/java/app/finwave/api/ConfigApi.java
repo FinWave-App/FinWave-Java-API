@@ -64,5 +64,5 @@ public class ConfigApi {
                          ReportConfig reports,
                          AiPublic ai) implements IResponse { }
 
-    record AiPublic(boolean enabled) {}
+    public record AiPublic(boolean enabled) {}
 }
