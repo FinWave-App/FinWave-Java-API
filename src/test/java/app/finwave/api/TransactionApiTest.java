@@ -18,7 +18,7 @@ class TransactionApiTest {
 
     private FinWaveClient client;
     protected long transactionId;
-    protected long tagId;
+    protected long categoryId;
     protected long accountId;
     protected long toAccountId;
 
@@ -26,22 +26,22 @@ class TransactionApiTest {
     void setUp() throws ExecutionException, InterruptedException {
         client = DemoLogin.createDemoAndLogin();
 
-        var accountTag = client.runRequest(new AccountTagApi.NewTagRequest("Test Tag", "Test Description")).get();
-        assertNotNull(accountTag);
-        var accountTagId = accountTag.tagId();
+        var accountFolder = client.runRequest(new AccountFolderApi.NewFolderRequest("Test Folder", "Test Description")).get();
+        assertNotNull(accountFolder);
+        var folderId = accountFolder.folderId();
 
-        var account = client.runRequest(new AccountApi.NewAccountRequest(accountTagId, 1, "Test Account", "Test Account Description")).get();
+        var account = client.runRequest(new AccountApi.NewAccountRequest(folderId, 1, "Test Account", "Test Account Description")).get();
         assertNotNull(account);
         accountId = account.accountId();
 
-        var toAccount = client.runRequest(new AccountApi.NewAccountRequest(accountTagId, 1, "Transfer Account", "Transfer Account Description")).get();
+        var toAccount = client.runRequest(new AccountApi.NewAccountRequest(folderId, 1, "Transfer Account", "Transfer Account Description")).get();
         assertNotNull(toAccount);
         toAccountId = toAccount.accountId();
 
-        var transactionTag = client.runRequest(new TransactionTagApi.NewTagRequest(0, null, "Test", "test")).get();
-        assertNotNull(transactionTag);
+        var transactionCategory = client.runRequest(new TransactionCategoryApi.NewCategoryRequest(0, null, "Test", "test")).get();
+        assertNotNull(transactionCategory);
 
-        tagId = transactionTag.tagId();
+        categoryId = transactionCategory.categoryId();
     }
 
     @Test
@@ -49,7 +49,7 @@ class TransactionApiTest {
     void newTransaction() throws ExecutionException, InterruptedException {
         OffsetDateTime createdAt = OffsetDateTime.now();
         var response = client.runRequest(new TransactionApi.NewTransactionRequest(
-                tagId, accountId, createdAt, BigDecimal.TEN, "Test Transaction"
+                categoryId, accountId, createdAt, BigDecimal.TEN, "Test Transaction"
         )).get();
 
         assertNotNull(response);
@@ -79,7 +79,7 @@ class TransactionApiTest {
     void editTransaction() throws ExecutionException, InterruptedException {
         OffsetDateTime createdAt = OffsetDateTime.now().plusDays(1);
         var response = client.runRequest(new TransactionApi.EditTransactionRequest(
-                transactionId, tagId, accountId, createdAt, BigDecimal.valueOf(20), "Edited Transaction"
+                transactionId, categoryId, accountId, createdAt, BigDecimal.valueOf(20), "Edited Transaction"
         )).get();
 
         assertNotNull(response);
@@ -121,7 +121,7 @@ class TransactionApiTest {
     void newInternalTransfer() throws ExecutionException, InterruptedException {
         OffsetDateTime createdAt = OffsetDateTime.now();
         var response = client.runRequest(new TransactionApi.NewInternalTransferRequest(
-                tagId, accountId, toAccountId, createdAt, BigDecimal.TEN.multiply(BigDecimal.valueOf(-1)), BigDecimal.TEN, "Test Internal Transfer"
+                categoryId, accountId, toAccountId, createdAt, BigDecimal.TEN.multiply(BigDecimal.valueOf(-1)), BigDecimal.TEN, "Test Internal Transfer"
         )).get();
 
         assertNotNull(response);
@@ -133,8 +133,8 @@ class TransactionApiTest {
     void newBulkTransactions() throws ExecutionException, InterruptedException {
         OffsetDateTime createdAt = OffsetDateTime.now();
         var entries = List.of(
-                new TransactionApi.BulkEntry(0, tagId, accountId, createdAt, BigDecimal.TEN, null, null, "Bulk Transaction 1"),
-                new TransactionApi.BulkEntry(1, tagId, accountId, createdAt, BigDecimal.valueOf(20).multiply(BigDecimal.valueOf(-1)), toAccountId, BigDecimal.valueOf(20), "Bulk Transaction 2")
+                new TransactionApi.BulkEntry(0, categoryId, accountId, createdAt, BigDecimal.TEN, null, null, "Bulk Transaction 1"),
+                new TransactionApi.BulkEntry(1, categoryId, accountId, createdAt, BigDecimal.valueOf(20).multiply(BigDecimal.valueOf(-1)), toAccountId, BigDecimal.valueOf(20), "Bulk Transaction 2")
         );
         var response = client.runRequest(new TransactionApi.NewBulkTransactionsRequest(entries)).get();
 

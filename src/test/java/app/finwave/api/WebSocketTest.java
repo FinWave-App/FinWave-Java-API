@@ -72,10 +72,10 @@ public class WebSocketTest {
     @Order(2)
     void update() throws ExecutionException, InterruptedException {
 
-        var tag = client.runRequest(new AccountTagApi.NewTagRequest("test", "test")).get();
-        assertNotNull(tag);
+        var folder = client.runRequest(new AccountFolderApi.NewFolderRequest("test", "test")).get();
+        assertNotNull(folder);
 
-        var account = client.runRequest(new AccountApi.NewAccountRequest(tag.tagId(), 1, "Test account", null)).get();
+        var account = client.runRequest(new AccountApi.NewAccountRequest(folder.folderId(), 1, "Test account", null)).get();
 
         assertNotNull(account);
         assertTrue(account.accountId() > 0);
@@ -87,7 +87,7 @@ public class WebSocketTest {
         assertEquals("update", message.type);
 
         NotifyUpdateBody body = message.getBody(NotifyUpdateBody.class);
-        assertEquals("accountTags", body.updated);
+        assertEquals("accountFolders", body.updated);
 
 
         message = handler.messageExpected().get();

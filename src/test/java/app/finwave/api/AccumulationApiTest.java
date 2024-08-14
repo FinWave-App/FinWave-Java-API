@@ -15,28 +15,28 @@ class AccumulationApiTest {
     private FinWaveClient client;
     protected long sourceAccountId;
     protected long targetAccountId;
-    protected long tagId;
+    protected long categoryId;
 
     @BeforeAll
     void setUp() throws ExecutionException, InterruptedException {
         client = DemoLogin.createDemoAndLogin();
 
-        var tagResponse = client.runRequest(new AccountTagApi.NewTagRequest("test tag", "test description")).get();
-        assertNotNull(tagResponse);
+        var folderResponse = client.runRequest(new AccountFolderApi.NewFolderRequest("test folder", "test description")).get();
+        assertNotNull(folderResponse);
 
-        var accountTagId = tagResponse.tagId();
+        var accountFolderId = folderResponse.folderId();
 
-        var sourceAccount = client.runRequest(new AccountApi.NewAccountRequest(accountTagId, 1, "Source Account", null)).get();
+        var sourceAccount = client.runRequest(new AccountApi.NewAccountRequest(accountFolderId, 1, "Source Account", null)).get();
         assertNotNull(sourceAccount);
         sourceAccountId = sourceAccount.accountId();
 
-        var targetAccount = client.runRequest(new AccountApi.NewAccountRequest(accountTagId, 1, "Target Account", null)).get();
+        var targetAccount = client.runRequest(new AccountApi.NewAccountRequest(accountFolderId, 1, "Target Account", null)).get();
         assertNotNull(targetAccount);
         targetAccountId = targetAccount.accountId();
 
-        var tag = client.runRequest(new TransactionTagApi.NewTagRequest(0, null, "test", "test")).get();
-        assertNotNull(tag);
-        tagId = tag.tagId();
+        var category = client.runRequest(new TransactionCategoryApi.NewCategoryRequest(0, null, "test", "test")).get();
+        assertNotNull(category);
+        categoryId = category.categoryId();
     }
 
     @Test
@@ -45,7 +45,7 @@ class AccumulationApiTest {
         var steps = List.of(
                 new AccumulationApi.AccumulationStep(BigDecimal.ZERO, BigDecimal.TEN, BigDecimal.ONE)
         );
-        var result = client.runRequest(new AccumulationApi.SetAccumulationRequest(sourceAccountId, targetAccountId, tagId, steps)).get();
+        var result = client.runRequest(new AccumulationApi.SetAccumulationRequest(sourceAccountId, targetAccountId, categoryId, steps)).get();
 
         assertNotNull(result);
         Assertions.assertEquals("Accumulation set", result.message());
@@ -59,12 +59,12 @@ class AccumulationApiTest {
 
         var accumulationOptional = result.accumulations()
                 .stream()
-                .filter(a -> a.sourceAccountId() == sourceAccountId && a.targetAccountId() == targetAccountId && a.tagId() == tagId)
+                .filter(a -> a.sourceAccountId() == sourceAccountId && a.targetAccountId() == targetAccountId && a.categoryId() == categoryId)
                 .findAny();
         Assertions.assertTrue(accumulationOptional.isPresent());
 
         var accumulationData = accumulationOptional.get();
-        Assertions.assertEquals(tagId, accumulationData.tagId());
+        Assertions.assertEquals(categoryId, accumulationData.categoryId());
 
         var step = accumulationData.steps().get(0);
         Assertions.assertEquals(BigDecimal.ZERO, step.from());

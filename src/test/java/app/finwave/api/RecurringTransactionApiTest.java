@@ -16,25 +16,25 @@ class RecurringTransactionApiTest {
 
     private FinWaveClient client;
     protected long recurringTransactionId;
-    protected long tagId;
+    protected long categoryId;
     protected long accountId;
 
     @BeforeAll
     void setUp() throws ExecutionException, InterruptedException {
         client = DemoLogin.createDemoAndLogin();
 
-        var accountTag = client.runRequest(new AccountTagApi.NewTagRequest("Test Tag", "Test Description")).get();
-        assertNotNull(accountTag);
+        var accountFolder = client.runRequest(new AccountFolderApi.NewFolderRequest("Test Folder", "Test Description")).get();
+        assertNotNull(accountFolder);
 
-        var account = client.runRequest(new AccountApi.NewAccountRequest(accountTag.tagId(), 1, "Test Account", "Test Account Description")).get();
+        var account = client.runRequest(new AccountApi.NewAccountRequest(accountFolder.folderId(), 1, "Test Account", "Test Account Description")).get();
         assertNotNull(account);
 
         accountId = account.accountId();
 
-        var transactionTag = client.runRequest(new TransactionTagApi.NewTagRequest(0, null, "Test", "test")).get();
-        assertNotNull(transactionTag);
+        var transactionCategory = client.runRequest(new TransactionCategoryApi.NewCategoryRequest(0, null, "Test", "test")).get();
+        assertNotNull(transactionCategory);
 
-        tagId = transactionTag.tagId();
+        categoryId = transactionCategory.categoryId();
     }
 
     @Test
@@ -42,7 +42,7 @@ class RecurringTransactionApiTest {
     void newRecurringTransaction() throws ExecutionException, InterruptedException {
         OffsetDateTime nextRepeat = OffsetDateTime.now().plusMonths(1);
         var response = client.runRequest(new RecurringTransactionApi.NewRecurringTransactionRequest(
-                tagId, accountId, nextRepeat, 1, (short) 1, 1, BigDecimal.TEN, "Test Recurring Transaction"
+                categoryId, accountId, nextRepeat, 1, (short) 1, 1, BigDecimal.TEN, "Test Recurring Transaction"
         )).get();
 
         assertNotNull(response);
@@ -56,7 +56,7 @@ class RecurringTransactionApiTest {
     void editRecurringTransaction() throws ExecutionException, InterruptedException {
         OffsetDateTime newNextRepeat = OffsetDateTime.now().plusMonths(2);
         var response = client.runRequest(new RecurringTransactionApi.EditRecurringTransactionRequest(
-                recurringTransactionId, tagId, accountId, newNextRepeat, 1, (short) 2, 1, BigDecimal.valueOf(20), "Edited Recurring Transaction"
+                recurringTransactionId, categoryId, accountId, newNextRepeat, 1, (short) 2, 1, BigDecimal.valueOf(20), "Edited Recurring Transaction"
         )).get();
 
         assertNotNull(response);

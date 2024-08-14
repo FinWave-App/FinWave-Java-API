@@ -8,7 +8,7 @@ import java.util.List;
 public class TransactionsFilter {
     public static final TransactionsFilter EMPTY = new TransactionsFilter();
 
-    protected List<Long> tagsIds;
+    protected List<Long> categoriesIds;
     protected List<Long> accountIds;
     protected List<Long> currenciesIds;
     protected OffsetDateTime fromTime;
@@ -18,8 +18,8 @@ public class TransactionsFilter {
     protected TransactionsFilter() {
     }
 
-    public TransactionsFilter(List<Long> tagsIds, List<Long> accountIds, List<Long> currenciesIds, OffsetDateTime fromTime, OffsetDateTime toTime, String description) {
-        this.tagsIds = tagsIds;
+    public TransactionsFilter(List<Long> categoriesIds, List<Long> accountIds, List<Long> currenciesIds, OffsetDateTime fromTime, OffsetDateTime toTime, String description) {
+        this.categoriesIds = categoriesIds;
         this.accountIds = accountIds;
         this.currenciesIds = currenciesIds;
         this.fromTime = fromTime;
@@ -30,9 +30,9 @@ public class TransactionsFilter {
     public List<Object> toOptions() {
         ArrayList<Object> result = new ArrayList<>();
 
-        if (tagsIds != null && !tagsIds.isEmpty()) {
-            result.add("tagsIds");
-            result.add(tagsIds.toString());
+        if (categoriesIds != null && !categoriesIds.isEmpty()) {
+            result.add("categoriesIds");
+            result.add(categoriesIds.toString());
         }
 
         if (accountIds != null && !accountIds.isEmpty()) {
@@ -63,8 +63,8 @@ public class TransactionsFilter {
         return result;
     }
 
-    public List<Long> getTagsIds() {
-        return tagsIds;
+    public List<Long> getCategoriesIds() {
+        return categoriesIds;
     }
 
     public List<Long> getAccountIds() {
@@ -87,8 +87,8 @@ public class TransactionsFilter {
         return description;
     }
 
-    public void setTagsIds(List<Long> tagsIds) {
-        this.tagsIds = tagsIds;
+    public void setCategoriesIds(List<Long> categoriesIds) {
+        this.categoriesIds = categoriesIds;
     }
 
     public void setAccountIds(List<Long> accountIds) {

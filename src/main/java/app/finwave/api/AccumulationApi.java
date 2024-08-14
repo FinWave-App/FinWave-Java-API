@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class AccumulationApi {
-    public record SetAccumulationRequest(long sourceAccountId, long targetAccountId, long tagId, List<AccumulationStep> steps) implements IRequest<ApiMessage> {
+    public record SetAccumulationRequest(long sourceAccountId, long targetAccountId, long categoryId, List<AccumulationStep> steps) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -75,6 +75,6 @@ public class AccumulationApi {
 
     public record GetAccumulationsListResponse(List<AccumulationData> accumulations) implements IResponse {}
 
-    public record AccumulationData(long sourceAccountId, long targetAccountId, long tagId, long userId, List<AccumulationStep> steps) {}
+    public record AccumulationData(long sourceAccountId, long targetAccountId, long categoryId, long userId, List<AccumulationStep> steps) {}
     public record AccumulationStep(BigDecimal from, BigDecimal to, BigDecimal step) {}
 }

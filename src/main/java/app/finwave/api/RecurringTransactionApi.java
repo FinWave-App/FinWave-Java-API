@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 public class RecurringTransactionApi {
-    public record NewRecurringTransactionRequest(long tagId, long accountId, OffsetDateTime nextRepeat, int repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IRequest<NewRecurringTransactionResponse> {
+    public record NewRecurringTransactionRequest(long categoryId, long accountId, OffsetDateTime nextRepeat, int repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IRequest<NewRecurringTransactionResponse> {
         @Override
         public Class<NewRecurringTransactionResponse> getResponseClass() {
             return NewRecurringTransactionResponse.class;
@@ -16,7 +16,7 @@ public class RecurringTransactionApi {
         @Override
         public String getUrl() {
             return Misc.formatQueryURL("user/transactions/recurring/new",
-                    "tagId", tagId,
+                    "categoryId", categoryId,
                     "accountId", accountId,
                     "nextRepeat", nextRepeat,
                     "repeatType", repeatType,
@@ -37,7 +37,7 @@ public class RecurringTransactionApi {
         }
     }
 
-    public record EditRecurringTransactionRequest(long recurringTransactionId, long tagId, long accountId, OffsetDateTime nextRepeat, int repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IRequest<ApiMessage> {
+    public record EditRecurringTransactionRequest(long recurringTransactionId, long categoryId, long accountId, OffsetDateTime nextRepeat, int repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -47,7 +47,7 @@ public class RecurringTransactionApi {
         public String getUrl() {
             return Misc.formatQueryURL("user/transactions/recurring/edit",
                     "recurringTransactionId", recurringTransactionId,
-                    "tagId", tagId,
+                    "categoryId", categoryId,
                     "accountId", accountId,
                     "nextRepeat", nextRepeat,
                     "repeatType", repeatType,
@@ -118,6 +118,6 @@ public class RecurringTransactionApi {
     public record GetRecurringListResponse(List<Entry> recurringList) implements IResponse {
     }
 
-    public record Entry(long recurringTransactionId, long tagId, long accountId, long currencyId, OffsetDateTime lastRepeat, OffsetDateTime nextRepeat, short repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IResponse {
+    public record Entry(long recurringTransactionId, long categoryId, long accountId, long currencyId, OffsetDateTime lastRepeat, OffsetDateTime nextRepeat, short repeatType, short repeatArg, int notificationMode, BigDecimal delta, String description) implements IResponse {
     }
 }

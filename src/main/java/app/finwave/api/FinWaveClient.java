@@ -80,12 +80,16 @@ public class FinWaveClient {
         return connectToWebsocket("websockets/events", handler);
     }
 
-    public  <R extends IResponse, T extends IRequest<R>> CompletableFuture<R> runRequest(T request) {
+    public <R extends IResponse, T extends IRequest<R>> CompletableFuture<R> runRequest(T request) {
+        return runRequest(request, connectTimeout, readTimeout);
+    }
+
+    public <R extends IResponse, T extends IRequest<R>> CompletableFuture<R> runRequest(T request, int connectTimeout, int readTimeout) {
         CompletableFuture<R> future = new CompletableFuture<>();
 
         threadPool.submit(() -> {
             try {
-                future.complete(sendRequest(request));
+                future.complete(sendRequest(request, connectTimeout, readTimeout));
             } catch (Throwable t) {
                 future.completeExceptionally(t);
             }
@@ -102,9 +106,9 @@ public class FinWaveClient {
         this.baseURL = baseURL;
     }
 
-    protected <R extends IResponse, T extends IRequest<R>> R sendRequest(T request) throws Exception {
+    protected <R extends IResponse, T extends IRequest<R>> R sendRequest(T request, int connectTimeout, int readTimeout) throws Exception {
         Object data = request.getData();
-        HttpURLConnection connection = getConnection(request, data);
+        HttpURLConnection connection = getConnection(request, data, connectTimeout, readTimeout);
 
         if (data != null) {
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8);
@@ -129,7 +133,7 @@ public class FinWaveClient {
         throw new ApiException(Misc.GSON.fromJson(response, ApiMessage.class));
     }
 
-    private <R extends IResponse, T extends IRequest<R>> HttpURLConnection getConnection(T request, Object data) throws IOException {
+    private <R extends IResponse, T extends IRequest<R>> HttpURLConnection getConnection(T request, Object data, int connectTimeout, int readTimeout) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(baseURL + request.getUrl()).openConnection();
 
         if (data != null)

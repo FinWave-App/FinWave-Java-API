@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class AccountApi {
-    public record NewAccountRequest(long tagId, long currencyId, String name, String description) implements IRequest<NewAccountResponse> {
+    public record NewAccountRequest(long folderId, long currencyId, String name, String description) implements IRequest<NewAccountResponse> {
         @Override
         public Class<NewAccountResponse> getResponseClass() {
             return NewAccountResponse.class;
@@ -15,7 +15,7 @@ public class AccountApi {
         @Override
         public String getUrl() {
             return Misc.formatQueryURL("user/accounts/new",
-                    "tagId", tagId,
+                    "folderId", folderId,
                     "currencyId", currencyId,
                     "name", name,
                     "description", description);
@@ -148,7 +148,7 @@ public class AccountApi {
         }
     }
 
-    public record EditAccountTagRequest(long accountId, long tagId) implements IRequest<ApiMessage> {
+    public record EditAccountFolderRequest(long accountId, long folderId) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -156,9 +156,9 @@ public class AccountApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/accounts/editTag",
+            return Misc.formatQueryURL("user/accounts/editFolder",
                     "accountId", accountId,
-                    "tagId", tagId);
+                    "folderId", folderId);
         }
 
         @Override
@@ -174,7 +174,7 @@ public class AccountApi {
 
     public record GetAccountsListResponse(List<AccountEntry> accounts) implements IResponse {}
 
-    public record AccountEntry(long accountId, long tagId, long currencyId, BigDecimal amount, boolean hidden, String name, String description) {}
+    public record AccountEntry(long accountId, long folderId, long currencyId, BigDecimal amount, boolean hidden, String name, String description) {}
 
     public record NewAccountResponse(long accountId) implements IResponse {}
 }

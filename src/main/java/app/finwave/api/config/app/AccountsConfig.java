@@ -6,10 +6,10 @@ public class AccountsConfig {
     public int maxNameLength = 64;
     public int maxDescriptionLength = 128;
 
-    public AccountTagsConfig tags = new AccountTagsConfig();
+    public AccountFoldersConfig folders = new AccountFoldersConfig();
 
-    public static class AccountTagsConfig {
-        public int maxTagsPerUser = 32;
+    public static class AccountFoldersConfig {
+        public int maxFoldersPerUser = 32;
         public int maxNameLength = 64;
         public int maxDescriptionLength = 128;
     }

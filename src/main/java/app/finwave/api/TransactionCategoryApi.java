@@ -4,17 +4,17 @@ import app.finwave.api.tools.*;
 
 import java.util.List;
 
-public class TransactionTagApi {
+public class TransactionCategoryApi {
 
-    public record NewTagRequest(int type, Long parentId, String name, String description) implements IRequest<NewTagResponse> {
+    public record NewCategoryRequest(int type, Long parentId, String name, String description) implements IRequest<NewCategoryResponse> {
         @Override
-        public Class<NewTagResponse> getResponseClass() {
-            return NewTagResponse.class;
+        public Class<NewCategoryResponse> getResponseClass() {
+            return NewCategoryResponse.class;
         }
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/transactions/tags/new",
+            return Misc.formatQueryURL("user/transactions/categories/new",
                     "type", type,
                     "parentId", parentId,
                     "name", name,
@@ -32,15 +32,15 @@ public class TransactionTagApi {
         }
     }
 
-    public record GetTagsRequest() implements IRequest<GetTagsResponse> {
+    public record GetCategoriesRequest() implements IRequest<GetCategoriesResponse> {
         @Override
-        public Class<GetTagsResponse> getResponseClass() {
-            return GetTagsResponse.class;
+        public Class<GetCategoriesResponse> getResponseClass() {
+            return GetCategoriesResponse.class;
         }
 
         @Override
         public String getUrl() {
-            return "user/transactions/tags/getList";
+            return "user/transactions/categories/getList";
         }
 
         @Override
@@ -54,7 +54,7 @@ public class TransactionTagApi {
         }
     }
 
-    public record EditTagTypeRequest(long tagId, int type) implements IRequest<ApiMessage> {
+    public record EditCategoryTypeRequest(long categoryId, int type) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -62,8 +62,8 @@ public class TransactionTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/transactions/tags/editType",
-                    "tagId", tagId,
+            return Misc.formatQueryURL("user/transactions/categories/editType",
+                    "categoryId", categoryId,
                     "type", type);
         }
 
@@ -78,7 +78,7 @@ public class TransactionTagApi {
         }
     }
 
-    public record EditTagParentRequest(long tagId, Long parentId, boolean setToRoot) implements IRequest<ApiMessage> {
+    public record EditCategoryParentRequest(long categoryId, Long parentId, boolean setToRoot) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -89,12 +89,12 @@ public class TransactionTagApi {
             String url;
 
             if (setToRoot)
-                url = Misc.formatQueryURL("user/transactions/tags/editParent",
-                        "tagId", tagId,
+                url = Misc.formatQueryURL("user/transactions/categories/editParent",
+                        "categoryId", categoryId,
                         "setToRoot", "true");
             else
-                url = Misc.formatQueryURL("user/transactions/tags/editParent",
-                    "tagId", tagId,
+                url = Misc.formatQueryURL("user/transactions/categories/editParent",
+                    "categoryId", categoryId,
                     "parentId", parentId);
 
             return url;
@@ -111,7 +111,7 @@ public class TransactionTagApi {
         }
     }
 
-    public record EditTagNameRequest(long tagId, String name) implements IRequest<ApiMessage> {
+    public record EditCategoryNameRequest(long categoryId, String name) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -119,8 +119,8 @@ public class TransactionTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/transactions/tags/editName",
-                    "tagId", tagId,
+            return Misc.formatQueryURL("user/transactions/categories/editName",
+                    "categoryId", categoryId,
                     "name", name);
         }
 
@@ -135,7 +135,7 @@ public class TransactionTagApi {
         }
     }
 
-    public record EditTagDescriptionRequest(long tagId, String description) implements IRequest<ApiMessage> {
+    public record EditCategoryDescriptionRequest(long categoryId, String description) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -143,8 +143,8 @@ public class TransactionTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/transactions/tags/editDescription",
-                    "tagId", tagId,
+            return Misc.formatQueryURL("user/transactions/categories/editDescription",
+                    "categoryId", categoryId,
                     "description", description);
         }
 
@@ -159,7 +159,7 @@ public class TransactionTagApi {
         }
     }
 
-    public record GetTagsResponse(List<TagEntry> tags) implements IResponse {}
-    public record TagEntry(long tagId, short type, String parentsTree, String name, String description) {}
-    public record NewTagResponse(long tagId) implements IResponse {}
+    public record GetCategoriesResponse(List<CategoryEntry> categories) implements IResponse {}
+    public record CategoryEntry(long categoryId, short type, String parentsTree, String name, String description) {}
+    public record NewCategoryResponse(long categoryId) implements IResponse {}
 }

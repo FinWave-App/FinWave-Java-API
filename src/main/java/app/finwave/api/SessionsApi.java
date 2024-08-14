@@ -77,7 +77,7 @@ public class SessionsApi {
         }
     }
 
-    public record NewSessionResponse(String token) implements IResponse {}
+    public record NewSessionResponse(String token, long sessionId) implements IResponse {}
 
     public record GetListResponse(List<Session> sessions) implements IResponse {}
 

@@ -4,16 +4,16 @@ import app.finwave.api.tools.*;
 
 import java.util.List;
 
-public class AccountTagApi {
-    public record NewTagRequest(String name, String description) implements IRequest<NewTagResponse> {
+public class AccountFolderApi {
+    public record NewFolderRequest(String name, String description) implements IRequest<NewFolderResponse> {
         @Override
-        public Class<NewTagResponse> getResponseClass() {
-            return NewTagResponse.class;
+        public Class<NewFolderResponse> getResponseClass() {
+            return NewFolderResponse.class;
         }
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/accounts/tags/new",
+            return Misc.formatQueryURL("user/accounts/folders/new",
                     "name", name,
                     "description", description);
         }
@@ -29,15 +29,15 @@ public class AccountTagApi {
         }
     }
 
-    public record GetTagsRequest() implements IRequest<GetTagsResponse> {
+    public record GetFoldersRequest() implements IRequest<GetFoldersResponse> {
         @Override
-        public Class<GetTagsResponse> getResponseClass() {
-            return GetTagsResponse.class;
+        public Class<GetFoldersResponse> getResponseClass() {
+            return GetFoldersResponse.class;
         }
 
         @Override
         public String getUrl() {
-            return "user/accounts/tags/getList";
+            return "user/accounts/folders/getList";
         }
 
         @Override
@@ -51,7 +51,7 @@ public class AccountTagApi {
         }
     }
 
-    public record EditTagNameRequest(long tagId, String name) implements IRequest<ApiMessage> {
+    public record EditFolderNameRequest(long folderId, String name) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -59,8 +59,8 @@ public class AccountTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/accounts/tags/editName",
-                    "tagId", tagId,
+            return Misc.formatQueryURL("user/accounts/folders/editName",
+                    "folderId", folderId,
                     "name", name);
         }
 
@@ -75,7 +75,7 @@ public class AccountTagApi {
         }
     }
 
-    public record EditTagDescriptionRequest(long tagId, String description) implements IRequest<ApiMessage> {
+    public record EditFolderDescriptionRequest(long folderId, String description) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -83,8 +83,8 @@ public class AccountTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/accounts/tags/editDescription",
-                    "tagId", tagId,
+            return Misc.formatQueryURL("user/accounts/folders/editDescription",
+                    "folderId", folderId,
                     "description", description);
         }
 
@@ -99,7 +99,7 @@ public class AccountTagApi {
         }
     }
 
-    public record DeleteTagRequest(long tagId) implements IRequest<ApiMessage> {
+    public record DeleteFolderRequest(long folderId) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -107,8 +107,8 @@ public class AccountTagApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/accounts/tags/delete",
-                    "tagId", tagId);
+            return Misc.formatQueryURL("user/accounts/folders/delete",
+                    "folderId", folderId);
         }
 
         @Override
@@ -122,10 +122,10 @@ public class AccountTagApi {
         }
     }
 
-    public record GetTagsResponse(List<TagEntry> tags) implements IResponse {}
+    public record GetFoldersResponse(List<FolderEntry> folders) implements IResponse {}
 
-    public record TagEntry(long tagId, String name, String description) {}
+    public record FolderEntry(long folderId, String name, String description) {}
 
-    public record NewTagResponse(long tagId) implements IResponse {}
+    public record NewFolderResponse(long folderId) implements IResponse {}
 
 }

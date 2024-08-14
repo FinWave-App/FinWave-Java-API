@@ -32,7 +32,7 @@ class SessionsApiTest {
         assertNotNull(sessionResponse.sessions());
 
         var newSession = sessionResponse.sessions().stream()
-                .filter(s -> token.equals(s.token()))
+                .filter(s -> response.sessionId() == s.sessionId())
                 .findFirst()
                 .orElse(null);
 

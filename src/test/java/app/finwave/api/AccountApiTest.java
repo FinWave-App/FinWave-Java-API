@@ -12,7 +12,7 @@ class AccountApiTest {
 
     private FinWaveClient client;
     protected long accountId;
-    protected long lastTag;
+    protected long lastFolder;
 
     @BeforeAll
     void setUp() throws ExecutionException, InterruptedException {
@@ -22,10 +22,10 @@ class AccountApiTest {
     @Test
     @Order(1)
     void newAccount() throws ExecutionException, InterruptedException {
-        var tag = client.runRequest(new AccountTagApi.NewTagRequest("test", "test")).get();
-        assertNotNull(tag);
+        var category = client.runRequest(new AccountFolderApi.NewFolderRequest("test", "test")).get();
+        assertNotNull(category);
 
-        var account = client.runRequest(new AccountApi.NewAccountRequest(tag.tagId(), 1, "Test account", null)).get();
+        var account = client.runRequest(new AccountApi.NewAccountRequest(category.folderId(), 1, "Test account", null)).get();
 
         assertNotNull(account);
         assertTrue(account.accountId() > 0);
@@ -71,15 +71,15 @@ class AccountApiTest {
 
     @Test
     @Order(6)
-    void editAccountTag() throws ExecutionException, InterruptedException {
-        var tag = client.runRequest(new AccountTagApi.NewTagRequest("test 2", "test 2")).get();
-        assertNotNull(tag);
+    void editAccountCategory() throws ExecutionException, InterruptedException {
+        var folder = client.runRequest(new AccountFolderApi.NewFolderRequest("test 2", "test 2")).get();
+        assertNotNull(folder);
 
-        lastTag = tag.tagId();
-        var result = client.runRequest(new AccountApi.EditAccountTagRequest(accountId, tag.tagId())).get();
+        lastFolder = folder.folderId();
+        var result = client.runRequest(new AccountApi.EditAccountFolderRequest(accountId, folder.folderId())).get();
 
         assertNotNull(result);
-        assertEquals("Account tag edited", result.message());
+        assertEquals("Account folder edited", result.message());
     }
 
     @Test
@@ -96,6 +96,6 @@ class AccountApiTest {
         assertEquals("New name", accountEntry.name());
         assertEquals("New description", accountEntry.description());
         assertFalse(accountEntry.hidden());
-        assertEquals(lastTag, accountEntry.tagId());
+        assertEquals(lastFolder, accountEntry.folderId());
     }
 }

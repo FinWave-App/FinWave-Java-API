@@ -30,7 +30,7 @@ public class TransactionApi {
         }
     }
 
-    public record NewInternalTransferRequest(long tagId, long fromAccountId, long toAccountId, OffsetDateTime createdAt, BigDecimal fromDelta, BigDecimal toDelta, String description) implements IRequest<NewTransactionResponse> {
+    public record NewInternalTransferRequest(long categoryId, long fromAccountId, long toAccountId, OffsetDateTime createdAt, BigDecimal fromDelta, BigDecimal toDelta, String description) implements IRequest<NewTransactionResponse> {
         @Override
         public Class<NewTransactionResponse> getResponseClass() {
             return NewTransactionResponse.class;
@@ -39,7 +39,7 @@ public class TransactionApi {
         @Override
         public String getUrl() {
             return Misc.formatQueryURL("user/transactions/newInternal",
-                    "tagId", tagId,
+                    "categoryId", categoryId,
                     "fromAccountId", fromAccountId,
                     "toAccountId", toAccountId,
                     "createdAt", createdAt,
@@ -59,7 +59,7 @@ public class TransactionApi {
         }
     }
 
-    public record NewTransactionRequest(long tagId, long accountId, OffsetDateTime createdAt, BigDecimal delta, String description) implements IRequest<NewTransactionResponse> {
+    public record NewTransactionRequest(long categoryId, long accountId, OffsetDateTime createdAt, BigDecimal delta, String description) implements IRequest<NewTransactionResponse> {
         @Override
         public Class<NewTransactionResponse> getResponseClass() {
             return NewTransactionResponse.class;
@@ -68,7 +68,7 @@ public class TransactionApi {
         @Override
         public String getUrl() {
             return Misc.formatQueryURL("user/transactions/new",
-                    "tagId", tagId,
+                    "categoryId", categoryId,
                     "accountId", accountId,
                     "createdAt", createdAt,
                     "delta", delta,
@@ -108,7 +108,7 @@ public class TransactionApi {
         }
     }
 
-    public record EditTransactionRequest(long transactionId, long tagId, long accountId, OffsetDateTime createdAt, BigDecimal delta, String description) implements IRequest<ApiMessage> {
+    public record EditTransactionRequest(long transactionId, long categoryId, long accountId, OffsetDateTime createdAt, BigDecimal delta, String description) implements IRequest<ApiMessage> {
         @Override
         public Class<ApiMessage> getResponseClass() {
             return ApiMessage.class;
@@ -118,7 +118,7 @@ public class TransactionApi {
         public String getUrl() {
             return Misc.formatQueryURL("user/transactions/edit",
                     "transactionId", transactionId,
-                    "tagId", tagId,
+                    "categoryId", categoryId,
                     "accountId", accountId,
                     "createdAt", createdAt,
                     "delta", delta,
@@ -195,5 +195,5 @@ public class TransactionApi {
 
     public record NewTransactionResponse(long transactionId) implements IResponse {}
 
-    public record BulkEntry(int type, long tagId, long accountId, OffsetDateTime created, BigDecimal delta, Long toAccountId, BigDecimal toDelta, String description) {}
+    public record BulkEntry(int type, long categoryId, long accountId, OffsetDateTime created, BigDecimal delta, Long toAccountId, BigDecimal toDelta, String description) {}
 }

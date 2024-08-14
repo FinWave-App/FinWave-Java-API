@@ -57,5 +57,5 @@ public class AnalyticsApi {
 
     public record AnalyticsByDays(HashMap<LocalDate, ArrayList<Entry>> total) implements IResponse {}
 
-    public record Entry(long currencyId, long tagId, BigDecimal delta) {}
+    public record Entry(long currencyId, long categoryId, BigDecimal delta) {}
 }
