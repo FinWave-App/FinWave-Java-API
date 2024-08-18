@@ -16,12 +16,41 @@ public class FilesApi {
 
         @Override
         public String getUrl() {
-            return "user/files/availableSpace";
+            return "files/authed/availableSpace";
         }
 
         @Override
         public RequestMethod getMethod() {
             return RequestMethod.GET;
+        }
+
+        @Override
+        public Object getData() {
+            return null;
+        }
+    }
+
+    public record UploadFromURLRequest(int expiredAfterDays, boolean isPublic, String mime, String name, String description, String url) implements IRequest<FileUploadResponse> {
+        @Override
+        public Class<FileUploadResponse> getResponseClass() {
+            return FileUploadResponse.class;
+        }
+
+        @Override
+        public String getUrl() {
+            return Misc.formatQueryURL("files/authed/uploadFromURL",
+                    "expiredAfterDays", expiredAfterDays,
+                    "isPublic", isPublic,
+                    "mime", mime,
+                    "name", name,
+                    "description", description,
+                    "url", url
+            );
+        }
+
+        @Override
+        public RequestMethod getMethod() {
+            return RequestMethod.POST;
         }
 
         @Override
@@ -38,7 +67,7 @@ public class FilesApi {
 
         @Override
         public String getUrl() {
-            return Misc.formatQueryURL("user/files/delete", "fileId", fileId);
+            return Misc.formatQueryURL("files/authed/delete", "fileId", fileId);
         }
 
         @Override
@@ -60,7 +89,7 @@ public class FilesApi {
 
         @Override
         public String getUrl() {
-            return "user/files/deleteAll";
+            return "files/authed/deleteAll";
         }
 
         @Override
@@ -82,7 +111,7 @@ public class FilesApi {
 
         @Override
         public String getUrl() {
-            return "user/files/getList";
+            return "files/authed/getList";
         }
 
         @Override
@@ -101,4 +130,6 @@ public class FilesApi {
     public record GetListResponse(List<Entry> files) implements IResponse {
         public record Entry(String fileId, boolean isPublic, OffsetDateTime createdAt, OffsetDateTime expiresAt, long size, String mimeType, String name, String description) {}
     }
+
+    public record FileUploadResponse(String fileId) implements IResponse {}
 }
